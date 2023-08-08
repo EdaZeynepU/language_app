@@ -1,12 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:language_app/constants/main_colors.dart';
+import 'package:language_app/models/user_model.dart';
 import 'package:language_app/screens/login.dart';
 import 'package:language_app/screens/sign_up.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(
+    ProviderScope(child: MyApp()),
+  );
 }
+
+final userModelProvider = StateProvider<userModel>((ref) =>
+    userModel(
+  '',
+  '',
+   0,
+  [],
+)
+);
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
@@ -24,37 +43,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+
+
+
+
+
+
+class MyHomePage extends ConsumerWidget {
   MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
 
-class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _userPasswordController = TextEditingController();
+    final myUserModel2 = ref.watch(userModelProvider);
 
-  void setNewUser(userName, password) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList(userName) == null) {
-      String _password = "password:" + password;
-      prefs.setStringList(userName, [_password]);
-    } else {
-      throw new FormatException("zaten varrr");
-    }
-    print(prefs.getStringList(userName)!.where((x) => x.contains("password:")));
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MainColors.lightAccentColor,
+      backgroundColor: MainColors.lightGray,
       appBar: AppBar(
         backgroundColor: MainColors.liveSecondaryColor,
-        title: Text(widget.title, style: TextStyle(color: Colors.white)),
+        title: Text(title, style: TextStyle(color: Colors.white)),
       ),
       body: Center(
         child: Column(
@@ -67,17 +77,17 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => signUp(title: "Sign Up")));
-                  },
-                  child: Text("Sign Up"),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => signUp(title: "Sign Up")));
+                },
+                child: Text("Sign Up"),
                 style: ElevatedButton.styleFrom(
-                  fixedSize: Size(200, 80),
-                  backgroundColor: MainColors.lightAccentColor,
-                  textStyle: TextStyle(color: MainColors.secondaryColor,fontSize: 25)
+                    fixedSize: Size(200, 80),
+                    backgroundColor: MainColors.lightGray,
+                    textStyle: TextStyle(color: MainColors.secondaryColor,fontSize: 25)
                 ),
               ),
             ),
@@ -91,13 +101,20 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text("Login"),
               style: ElevatedButton.styleFrom(
                   fixedSize: Size(200, 80),
-                  backgroundColor: MainColors.lightAccentColor,
+                  backgroundColor: MainColors.lightGray,
                   textStyle: TextStyle(color: MainColors.secondaryColor,fontSize: 25)
               ),
             ),
+            ElevatedButton(onPressed: (){}, child: Text("hey")),
+          Text("${myUserModel2.name}"),
+          // Text("${myUserModel2.name}"),
           ],
         ),
       ),
     );
+
+    throw UnimplementedError();
   }
 }
+
+
