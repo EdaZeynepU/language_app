@@ -7,7 +7,9 @@ import '../language_learning_interactives/word_practice.dart';
 
 class InsideCategory extends StatefulWidget {
   final String category;
-  const InsideCategory({super.key, required this.category});
+  final String language;
+  final String targetLanguage;
+  const InsideCategory({super.key, required this.category, required this.language, required this.targetLanguage,});
 
   @override
   State<InsideCategory> createState() => _InsideCategoryState();
@@ -33,7 +35,7 @@ class _InsideCategoryState extends State<InsideCategory> {
         backgroundColor: MainColors.lightPrimaryColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      backgroundColor: MainColors.orangeSoftColor,
+      backgroundColor: MainColors.lightGray,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -56,16 +58,45 @@ class _InsideCategoryState extends State<InsideCategory> {
   void getDatas(){
     List<Structure> base=[];
     switch (widget.category){
-      case "Basic 1":
+      case "Basics 1":
         base=basic1;
       case "Greetings":
         base=greetings;
-
+      case "Family 1":
+        base=family1;
+      case "Family 2":
+        base=family2;
+      case "Food":
+        base=food;
+      case "Numbers 1":
+        base=numbers1;
     }
+
+    //find best practise for this
     for (var structure in base) {
-      // gerEng[structure.german] = structure.english;
-      selectedMap[structure.english] = structure.turkish;
-      // trGer[structure.turkish] = structure.german;
+      var from;
+      var to;
+      switch (widget.language){
+        case "tr":
+          from=structure.turkish;
+        case "eng":
+          from=structure.english;
+        case "de":
+          from=structure.german;
+        case "nl":
+          from=structure.dutch;
+      }
+      switch (widget.targetLanguage){
+        case "tr":
+          to=structure.turkish;
+        case "eng":
+          to=structure.english;
+        case "de":
+          to=structure.german;
+        case "nl":
+          to=structure.dutch;
+      }
+      selectedMap[to] = from;
     }
   }
 }

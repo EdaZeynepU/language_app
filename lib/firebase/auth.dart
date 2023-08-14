@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+import '../main.dart';
 
 class AuthService {
   final userCollection = FirebaseFirestore.instance.collection("users");
@@ -56,9 +59,14 @@ class AuthService {
     User? user = FirebaseAuth.instance.currentUser;
     DocumentReference userRef = userCollection.doc(user!.uid);
     DocumentSnapshot userDoc = await userRef.get();
-
     return userDoc;
   }
 
+  Future<void> Logout(BuildContext context) async {
+    firebaseAuth.signOut().then((value) {
+      Route<Object> newRoute=MaterialPageRoute(builder: (context) => MyHomePage(title: 'Language Learning'),);
+      Navigator.of(context).pushAndRemoveUntil(newRoute, (route) => false);
+    });
+  }
 
 }

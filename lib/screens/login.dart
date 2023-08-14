@@ -56,7 +56,7 @@ class loginPage extends ConsumerWidget {
 
                   updateUserDetails(ref);
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => welcomePage(),));
+                      MaterialPageRoute(builder: (context) => WelcomePage(),));
 
                   // loginCheck(
                   //     _userNameController.text, _userPasswordController.text);

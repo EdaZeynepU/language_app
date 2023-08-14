@@ -68,6 +68,12 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - lib/icons/coin.png
+    - lib/icons/turkey_flag.png
+    - lib/icons/america_flag.png
+    - lib/icons/germany_flag.png
+    - lib/icons/netherlands_flag.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
